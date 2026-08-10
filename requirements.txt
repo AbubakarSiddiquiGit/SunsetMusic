@@ -2,3 +2,6 @@ fastapi
 uvicorn
 yt-dlp
 pytubefix
+sqlalchemy
+httpx
+ytmusicapi
