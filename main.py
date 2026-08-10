@@ -55,12 +55,13 @@ def search_tracks(q: str, db: Session = Depends(get_db)):
         db.commit()
     return metadata_engine.search(q)
 
-@app.get("/api/stream/{video_id}", response_model=StreamResponse)
-async def get_stream_url(video_id: str):
-    stream_url = await audio_engine.extract_stream_url(video_id)
-    if not stream_url:
-        raise HTTPException(status_code=404, detail="Could not extract audio stream")
-    return {"stream_url": stream_url}
+from fastapi.responses import RedirectResponse
+
+@app.get("/api/proxy-stream")
+async def proxy_stream(url: str):
+    # Instead of Render trying to download the stream and crashing, 
+    # we just instantly redirect your phone to stream it directly!
+    return RedirectResponse(url=url)
 
 from fastapi import Request
 from fastapi.responses import StreamingResponse
